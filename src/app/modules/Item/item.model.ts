@@ -41,19 +41,11 @@ const itemSchema = new Schema<TItem>(
       type: Number,
       required: true,
     },
-    status: {
-      type: String,
-      required: true,
-      enum: ItemStatus,
-    },
+
     createdBy: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
-    },
-    itemStatus: {
-      type: String,
-      required: true,
     },
   },
   {

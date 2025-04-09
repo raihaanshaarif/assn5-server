@@ -13,20 +13,20 @@ router.post(
   '/create-admin',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(createAdminValidationSchema),
-  UserControllers.createAdmin,
+  UserControllers.createAdmin
 );
 
 router.post(
   '/change-status/:id',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
   validateRequest(UserValidation.changeStatusValidationSchema),
-  UserControllers.changeStatus,
+  UserControllers.changeStatus
 );
 
 router.get(
   '/me',
   auth(USER_ROLE.superAdmin, USER_ROLE.admin),
-  UserControllers.getMe,
+  UserControllers.getMe
 );
 
 export const UserRoutes = router;

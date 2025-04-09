@@ -1,7 +1,7 @@
 import { Types } from 'mongoose';
 
 export type TCondition = 'New' | 'Old';
-export type TStatus = 'Available' | 'Sold';
+
 export type TCategory =
   | 'CPU'
   | 'Motherboard'
@@ -25,7 +25,6 @@ export type TItem = {
   condition: TCondition;
   capacity?: string;
   quantity: number;
-  status: TStatus;
+
   createdBy: Types.ObjectId;
-  itemStatus: string;
 };
