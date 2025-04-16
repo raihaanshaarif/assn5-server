@@ -33,6 +33,7 @@ const getSingleItemFromDB = async (id: string) => {
 };
 
 const updateItemIntoDB = async (id: string, payload: Partial<TItem>) => {
+  console.log(payload, 'payload');
   const result = await Item.findOneAndUpdate({ _id: id }, payload, {
     new: true,
   });

@@ -7,6 +7,9 @@ import { Item } from '../Item/item.model';
 
 const sellSchema = new Schema<TSell>(
   {
+    id: {
+      type: String,
+    },
     itemId: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -24,6 +27,10 @@ const sellSchema = new Schema<TSell>(
       type: Schema.Types.ObjectId,
       required: true,
       ref: 'User',
+    },
+    saleDate: {
+      type: Date,
+      default: Date.now,
     },
   },
   {

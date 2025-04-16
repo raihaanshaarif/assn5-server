@@ -19,6 +19,7 @@ const itemCategoryEnum = z.enum([
 
 export const createItem = z.object({
   body: z.object({
+    id: z.string().min(1, 'Id is required'),
     name: z.string().min(1, 'Name is required'),
     category: itemCategoryEnum,
     brand: z.string().min(1, 'Brand is required'),
@@ -36,6 +37,7 @@ export const createItem = z.object({
 export const patchItem = z.object({
   body: z
     .object({
+      id: z.string().min(1, 'Id is required').optional(),
       name: z.string().min(1, 'Name is required').optional(),
       category: itemCategoryEnum.optional(),
       brand: z.string().min(1, 'Brand is required').optional(),

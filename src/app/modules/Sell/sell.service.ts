@@ -14,44 +14,41 @@ const createSellIntoDB = async (payload: TSell) => {
 
     const { itemId, quantity } = payload;
 
-    // Fetch the item that matches the given itemId (for the second transaction)
+    // Fetch the item that matches the given itemId
     const itemExist = await Item.findOne({ _id: itemId }).session(session);
 
     if (!itemExist) {
       throw new Error('Item not found!');
     }
 
-    const availableQty = itemExist.quantity; // Get available quantity from the fetched item
+    const availableQty = itemExist.quantity;
 
-    // Check if the available quantity is greater than the requested quantity
-    if (availableQty <= quantity) {
+    // ❗ FIXED: Use < instead of <=
+    if (availableQty < quantity) {
       throw new Error('Not enough quantity available!');
     }
 
-    // --- Transaction 1: Create a new Sell record ---
+    // Transaction 1: Create the Sell record
     const newSell = await Sell.create([payload], { session });
 
-    // --- Transaction 2: Deduct the requested quantity from the Item model (using findOneAndUpdate) ---
+    // Transaction 2: Deduct quantity from the Item
     const updatedItem = await Item.findOneAndUpdate(
-      { _id: itemId }, // Match by the itemId (unique identifier)
-      { $inc: { quantity: -quantity } }, // Increment the quantity field by subtracting the requested quantity
-      { new: true, session } // Returns the updated item and uses the same session
+      { _id: itemId },
+      { $inc: { quantity: -quantity } },
+      { new: true, session }
     );
 
     if (!updatedItem) {
       throw new Error('Failed to update Item quantity');
     }
 
-    // Commit the transaction if everything goes well
     await session.commitTransaction();
-
-    return updatedItem;
+    return newSell;
   } catch (error) {
-    // Rollback the transaction if an error occurs
     await session.abortTransaction();
     console.error('Error during transaction:', error);
+    throw error; // Optional: throw so caller can catch
   } finally {
-    // End the session
     session.endSession();
   }
 };
